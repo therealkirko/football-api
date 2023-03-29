@@ -25,6 +25,6 @@ Route::prefix('auth')->group(function() {
         Route::post('/phone', [AuthController::class, 'phoneVerify']);
     });
     
-    Route::post('user/password', [AuthController::class, 'setPin']);
-    Route::post('login', [AuthController::class, 'login']);
+    Route::post('/user/password', [AuthController::class, 'setPin']);
+    Route::post('/login', [AuthController::class, 'login']);
 });

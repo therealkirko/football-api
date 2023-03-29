@@ -38,7 +38,24 @@ class AuthController extends Controller
     }
 
     public function login(Request $request){
-        
+        try {
+            $user = Ambassador::where('phone', $request->phone)->first();
+
+            if(!$user || !Hash::check($request['pin'], $user->password)) {
+                return response()->json([
+                    'error' => true,
+                    'message' => 'We could not match any account with the credentials provided'
+                ], 401);
+            }
+
+            $token = $user->createToken('auth')->plainTextToken;
+
+            return response()->json([
+                'access-token' => base64_encode($token)
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json($e);
+        }
     }
 
     public function setPin(Request $request)
