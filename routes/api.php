@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,4 +17,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+
+Route::prefix('auth')->group(function() {
+    Route::prefix('verify')->group(function() {
+        Route::post('/phone', [AuthController::class, 'phoneVerify']);
+    });
+    
+    Route::post('user/password', [AuthController::class, 'setPin']);
+    Route::post('login', [AuthController::class, 'login']);
 });

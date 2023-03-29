@@ -1,0 +1,70 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Ambassador;
+use Illuminate\Support\Facades\Hash;
+
+class AuthController extends Controller
+{
+    public function phoneVerify(Request $request)
+    {
+        try {
+            $user = Ambassador::where('phone', $request->phone)->first();
+            if(empty($user)){
+                return response()->json([
+                    'error' => true,
+                    'message' => "Oops!! We couldn't found data for provided phone number"
+                ], 400);
+            }
+            
+            if(empty($user->password)) {
+                return response()->json([
+                    'error' => true,
+                    'message' => "Your account is not properly set. Kindly set up your 4 digit pin to proceed"
+                ], 405);
+            }
+
+            return response()->json([
+                'data' => $user
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => true,
+                'message' => $e->getMessage()
+            ], 400);
+        }
+    }
+
+    public function login(Request $request){
+        
+    }
+
+    public function setPin(Request $request)
+    {
+        try {
+            $user = $user = Ambassador::where('phone', $request->phone)->first();
+
+            if(empty($user)){
+                return response()->json([
+                    'error' => true,
+                    'message' => "Oops!! We couldn't found data for provided phone number"
+                ], 400);
+            }
+
+            $user->password = Hash::make($request->pin);
+            $user->update();
+
+            return response()->json([
+                'error' => false,
+                'message' => "Your have successfully updated your account. Proceed to login."
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => true,
+                'message' => $e->getMessage()
+            ], 400);
+        }
+    }
+}
