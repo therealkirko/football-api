@@ -33,7 +33,7 @@ class AuthController extends Controller
             return response()->json([
                 'error' => true,
                 'message' => $e->getMessage()
-            ], 400);
+            ], 500);
         }
     }
 
@@ -51,17 +51,55 @@ class AuthController extends Controller
             $token = $user->createToken('auth')->plainTextToken;
 
             return response()->json([
-                'access-token' => base64_encode($token)
+                'access-token' => $token
             ], 201);
         } catch (\Exception $e) {
-            return response()->json($e);
+            return response()->json([
+                'error' => true,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function confirmPin(Request $request)
+    {
+        try {
+            $user = Ambassador::where('phone', $request->phone)->first();
+            
+            if(empty($user)){
+                return response()->json([
+                    'error' => true,
+                    'message' => "Oops!! We couldn't found data for provided phone number"
+                ], 400);
+            }
+
+            if(!Hash::check($request->pin, $user->password)) {
+                return response()->json([
+                    'error' => true,
+                    'message' => "Oops!! You entered the wrong pin code. Try again"
+                ], 400);
+            }
+
+            $token = $user->createToken('auth')->plainTextToken;
+            
+            $accessToken = base64_encode($token);
+
+            return response()->json([
+                'token' => $accessToken
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => true,
+                'message' => $e->getMessage()
+            ], 500);
         }
     }
 
     public function setPin(Request $request)
     {
         try {
-            $user = $user = Ambassador::where('phone', $request->phone)->first();
+            $user = Ambassador::where('phone', $request->phone)->first();
 
             if(empty($user)){
                 return response()->json([
@@ -81,7 +119,7 @@ class AuthController extends Controller
             return response()->json([
                 'error' => true,
                 'message' => $e->getMessage()
-            ], 400);
+            ], 500);
         }
     }
 }
