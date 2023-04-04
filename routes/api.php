@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CampaignController;
+use App\Http\Controllers\ShiftController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,4 +29,13 @@ Route::prefix('auth')->group(function() {
     
     Route::post('/user/password', [AuthController::class, 'setPin']);
     Route::post('/login', [AuthController::class, 'login']);
+});
+
+Route::middleware('auth:sanctum')->group(function() {
+    Route::get('/campaign/instore', [CampaignController::class, 'instore']);
+
+    Route::prefix('shift')->group(function() {
+        Route::post('/clockin', [ShiftController::class, 'index']);
+        Route::post('/stock-take', [ShiftController::class, 'stockTake']);
+    });
 });

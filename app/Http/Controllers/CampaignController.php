@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Instore;
 use App\Models\Ambassador;
 use Illuminate\Http\Request;
-use App\Models\Instore;
 use Illuminate\Support\Facades\Auth;
 
 class CampaignController extends Controller
