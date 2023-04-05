@@ -32,8 +32,10 @@ Route::prefix('auth')->group(function() {
 });
 
 Route::middleware('auth:sanctum')->group(function() {
-    Route::get('/campaign/instore', [CampaignController::class, 'instore']);
-    Route::get('/campaign/instore/{id]', [CampaignController::class, 'showInstore']);
+    Route::prefix('campaigns')->group(function() {
+        Route::get('/instore', [CampaignController::class, 'instore']);
+        Route::get('/instore/{id]', [CampaignController::class, 'showInstore']);
+    });
 
     Route::prefix('shift')->group(function() {
         Route::post('/clockin', [ShiftController::class, 'index']);
