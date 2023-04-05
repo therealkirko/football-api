@@ -27,4 +27,18 @@ class CampaignController extends Controller
             ], 500);
         }
     }
+
+    public function showInstore($id)
+    {
+        try {
+            $instore = Instore::where('uuid', $id)->first();
+
+            return response()->json($instore, 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => true,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
 }
