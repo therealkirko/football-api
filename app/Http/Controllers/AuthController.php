@@ -27,7 +27,8 @@ class AuthController extends Controller
             }
 
             return response()->json([
-                'data' => $user
+                'error' => false,
+                'message' => "Hurray!! We found your account. Kindly proceed to login."
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
