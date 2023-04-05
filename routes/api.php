@@ -34,7 +34,7 @@ Route::prefix('auth')->group(function() {
 Route::middleware('auth:sanctum')->group(function() {
     Route::prefix('campaigns')->group(function() {
         Route::get('/instore', [CampaignController::class, 'instore']);
-        Route::get('/instore/{id]', [CampaignController::class, 'showInstore']);
+        Route::get('/instore/{id}', [CampaignController::class, 'showInstore']);
     });
 
     Route::prefix('shift')->group(function() {
