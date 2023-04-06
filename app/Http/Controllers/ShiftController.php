@@ -14,32 +14,44 @@ class ShiftController extends Controller
 {
     public function checkStatus()
     {
-        $user = Ambassador::where('id', Auth::user()->id)->first();
+        try {
+            $user = Ambassador::where('id', Auth::user()->id)->first();
 
-        $shift = Shift::where('ambassador_id', $user->id)
-            ->whereDate('created_at', Carbon::today())
-            ->first();
+            $shift = Shift::where('ambassador_id', $user->id)
+                ->whereDate('created_at', Carbon::today())
+                ->first();
 
-        if (!$shift){
+            if (!$shift){
+                return response()->json([
+                    'id' => 1,
+                    'name' => 'clock in'
+                ], 200);
+            }else if(!$shift->hasPersonalPhoto) {
+                return response()->json([
+                    'id' => 2,
+                    'name' => 'selfie',
+                ], 200);
+            }else if(!$shift->hasShelfPhoto) {
+                return response()->json([
+                    'id' => 3,
+                    'name' => 'shelf photo'
+                ], 200);
+            }else if(!$shift->hasUpdatedStock) {
+                return response()->json([
+                    'id' => 4,
+                    'name' => 'update stock'
+                ], 200);
+            }else {
+                return response()->json([
+                    'error' => false,
+                    'message' => 'Completed onboarding process. Good luck on your shift.'
+                ], 200);
+            }
+        } catch (\Exception $e) {
             return response()->json([
-                'error' => false,
-                'message' => 'You have not started your shift today.'
-            ], 404);
-        }else if(!$shift->hasPersonalPhoto) {
-            return response()->json([
-                'error' => false,
-                'message' => 'Kindly take a selfie at the store.'
-            ], 202);
-        }else if(!$shift->hasUpdatedStock) {
-            return response()->json([
-                'error' => false,
-                'message' => 'Kindly update stock.'
-            ], 204);
-        }else {
-            return response()->json([
-                'error' => false,
-                'message' => 'Proceed to you shift.'
-            ], 200);
+                'error' => true,
+                'message' => $e->getMessage()
+            ], 500);
         }
     }
 
