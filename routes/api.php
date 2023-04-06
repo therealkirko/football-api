@@ -38,7 +38,7 @@ Route::middleware('auth:sanctum')->group(function() {
     });
 
     Route::prefix('shift')->group(function() {
-        Route::get('/check', [ShiftController::class, 'checkStatus']);
+        Route::get('/check/{uuid}', [ShiftController::class, 'checkStatus']);
         Route::post('/clockin', [ShiftController::class, 'index']);
         Route::post('/stock-take', [ShiftController::class, 'stockTake']);
     });

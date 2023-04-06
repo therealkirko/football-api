@@ -12,12 +12,13 @@ use Illuminate\Support\Facades\Auth;
 
 class ShiftController extends Controller
 {
-    public function checkStatus()
+    public function checkStatus($uuid)
     {
         try {
             $user = Ambassador::where('id', Auth::user()->id)->first();
 
             $shift = Shift::where('ambassador_id', $user->id)
+                ->where('uuid', $uuid)
                 ->whereDate('created_at', Carbon::today())
                 ->first();
 
@@ -62,8 +63,6 @@ class ShiftController extends Controller
 
             $user->shifts()->create([
                 'status' => true,
-                'speed' => $request->speed,
-                'isMock' => $request->isMock,
                 'accuracy' => $request->accuracy,
                 'latitude' => $request->latitude,
                 'longitude' => $request->longitude,

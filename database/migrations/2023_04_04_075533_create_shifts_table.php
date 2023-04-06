@@ -16,12 +16,10 @@ class CreateShiftsTable extends Migration
         Schema::create('shifts', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid')->index();
-            $table->string('speed')->nullable();
             $table->string('accuracy')->nullable();
             $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();
             $table->time('clockin_time')->nullable();
-            $table->boolean('isMock')->default(false);
             $table->time('clockout_time')->nullable();
             $table->boolean('status')->default(false);
             $table->foreignId('instore_id')->constrained();
