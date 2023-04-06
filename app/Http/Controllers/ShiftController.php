@@ -12,6 +12,37 @@ use Illuminate\Support\Facades\Auth;
 
 class ShiftController extends Controller
 {
+    public function checkStatus()
+    {
+        $user = Ambassador::where('id', Auth::user()->id)->first();
+
+        $shift = Shift::where('ambassador_id', $user->id)
+            ->whereDate('created_at', Carbon::today())
+            ->first();
+
+        if (!$shift){
+            return response()->json([
+                'error' => false,
+                'message' => 'You have not started your shift today.'
+            ], 404);
+        }else if(!$shift->hasPersonalPhoto) {
+            return response()->json([
+                'error' => false,
+                'message' => 'Kindly take a selfie at the store.'
+            ], 202);
+        }else if(!$shift->hasUpdatedStock) {
+            return response()->json([
+                'error' => false,
+                'message' => 'Kindly update stock.'
+            ], 204);
+        }else {
+            return response()->json([
+                'error' => false,
+                'message' => 'Proceed to you shift.'
+            ], 200);
+        }
+    }
+
     public function index(Request $request)
     {
         try {
