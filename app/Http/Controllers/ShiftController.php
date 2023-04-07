@@ -12,47 +12,91 @@ use Illuminate\Support\Facades\Auth;
 
 class ShiftController extends Controller
 {
-    public function checkStatus($uuid)
+    public function checkClockIn($uuid)
     {
-        try {
-            $user = Ambassador::where('id', Auth::user()->id)->first();
+        $user = Ambassador::where('id', Auth::user()->id)->first();
 
-            $shift = Shift::where('ambassador_id', $user->id)
-                ->where('uuid', $uuid)
-                ->whereDate('created_at', Carbon::today())
-                ->first();
+        $shift = Shift::where('ambassador_id', $user->id)
+            ->where('uuid', $uuid)
+            ->whereDate('created_at', Carbon::today())
+            ->first();
 
-            if (!$shift){
-                return response()->json([
-                    'id' => 1,
-                    'name' => 'clock in'
-                ], 200);
-            }else if(!$shift->hasPersonalPhoto) {
-                return response()->json([
-                    'id' => 2,
-                    'name' => 'selfie',
-                ], 200);
-            }else if(!$shift->hasShelfPhoto) {
-                return response()->json([
-                    'id' => 3,
-                    'name' => 'shelf photo'
-                ], 200);
-            }else if(!$shift->hasUpdatedStock) {
-                return response()->json([
-                    'id' => 4,
-                    'name' => 'update stock'
-                ], 200);
-            }else {
-                return response()->json([
-                    'error' => false,
-                    'message' => 'Completed onboarding process. Good luck on your shift.'
-                ], 200);
-            }
-        } catch (\Exception $e) {
+        if (!$shift){
             return response()->json([
-                'error' => true,
-                'message' => $e->getMessage()
-            ], 500);
+                'id' => 1,
+                'name' => 'clock in'
+            ], 200);
+        }else {
+            return response()->json([
+                'error' => false,
+                'message' => 'Already clocked in.'
+            ], 200);
+        }
+    }
+
+    public function checkSelfie($uuid)
+    {
+        $user = Ambassador::where('id', Auth::user()->id)->first();
+
+        $shift = Shift::where('ambassador_id', $user->id)
+            ->where('uuid', $uuid)
+            ->whereDate('created_at', Carbon::today())
+            ->first();
+
+        if(!$shift->hasPersonalPhoto) {
+            return response()->json([
+                'id' => 2,
+                'name' => 'selfie',
+            ], 200);
+        }else {
+            return response()->json([
+                'error' => false,
+                'message' => 'Already taken a selfie.',
+            ], 200);
+        }
+    }
+
+    public function checkShelfPhoto($uuid)
+    {
+        $user = Ambassador::where('id', Auth::user()->id)->first();
+
+        $shift = Shift::where('ambassador_id', $user->id)
+            ->where('uuid', $uuid)
+            ->whereDate('created_at', Carbon::today())
+            ->first();
+
+        if(!$shift->hasShelfPhoto) {
+            return response()->json([
+                'id' => 2,
+                'name' => 'shelf',
+            ], 200);
+        }else {
+            return response()->json([
+                'error' => false,
+                'message' => 'Already taken a photo of shelf.',
+            ], 200);
+        }
+    }
+
+    public function checkStockUpdate()
+    {
+        $user = Ambassador::where('id', Auth::user()->id)->first();
+
+        $shift = Shift::where('ambassador_id', $user->id)
+            ->where('uuid', $uuid)
+            ->whereDate('created_at', Carbon::today())
+            ->first();
+
+        if(!$shift->hasUpdatedStock) {
+            return response()->json([
+                'id' => 2,
+                'name' => 'shelf',
+            ], 200);
+        }else {
+            return response()->json([
+                'error' => false,
+                'message' => 'Already updated stock.',
+            ], 200);
         }
     }
 
@@ -75,7 +119,7 @@ class ShiftController extends Controller
                 'error' => false,
                 'message' => 'You have successfully started your shift today.'
             ], 200);
-            
+
         } catch (\Exception $e) {
             return response()->json([
                 'error' => true,
@@ -108,7 +152,7 @@ class ShiftController extends Controller
                 'error' => false,
                 'message' => "You have successfully taken today's stock take."
             ], 200);
-            
+
         } catch (\Exception $e) {
             return response()->json([
                 'error' => true,
