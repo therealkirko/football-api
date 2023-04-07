@@ -12,6 +12,52 @@ use Illuminate\Support\Facades\Auth;
 
 class ShiftController extends Controller
 {
+    public function checkStatus($instoreId)
+    {
+        try {
+            $user = Ambassador::where('id', Auth::user()->id)->first();
+
+            $today = Carbon::today();
+
+            $shift = Shift::where('ambassador_id', $user->id)
+                ->where('instore_id', $instoreId)
+                ->where('created_at', '>=', $today)
+                ->first();
+
+            if (!$shift){
+                return response()->json([
+                    'id' => 1,
+                    'name' => 'clock in'
+                ], 200);
+            }else if(!$shift->hasPersonalPhoto) {
+                return response()->json([
+                    'id' => 2,
+                    'name' => 'selfie',
+                ], 200);
+            }else if(!$shift->hasShelfPhoto) {
+                return response()->json([
+                    'id' => 3,
+                    'name' => 'shelf photo'
+                ], 200);
+            }else if(!$shift->hasUpdatedStock) {
+                return response()->json([
+                    'id' => 4,
+                    'name' => 'update stock'
+                ], 200);
+            }else {
+                return response()->json([
+                    'error' => false,
+                    'message' => 'Completed onboarding process. Good luck on your shift.'
+                ], 200);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => true,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
     public function checkClockIn($uuid)
     {
         $user = Ambassador::where('id', Auth::user()->id)->first();

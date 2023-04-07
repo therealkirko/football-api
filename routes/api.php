@@ -38,10 +38,11 @@ Route::middleware('auth:sanctum')->group(function() {
     });
 
     Route::prefix('shift')->group(function() {
-        Route::get('/check/clockin/{uuid}', [ShiftController::class, 'checkClockIn']);
-        Route::get('/check/selfie/{uuid}', [ShiftController::class, 'checkSelfie']);
-        Route::get('/check/shelf/{uuid}', [ShiftController::class, 'checkShelfPhoto']);
-        Route::get('/check/stock/{uuid}', [ShiftController::class, 'checkStockUpdate']);
+        Route::get('/check/status/{instoreId}', [ShiftController::class, 'checkStatus']);
+        Route::get('/check/clockin/{instoreId}', [ShiftController::class, 'checkClockIn']);
+        Route::get('/check/selfie/{instoreId}', [ShiftController::class, 'checkSelfie']);
+        Route::get('/check/shelf/{instoreId}', [ShiftController::class, 'checkShelfPhoto']);
+        Route::get('/check/stock/{instoreId}', [ShiftController::class, 'checkStockUpdate']);
 
         Route::post('/clockin', [ShiftController::class, 'index']);
         Route::post('/stock-take', [ShiftController::class, 'stockTake']);
