@@ -33,15 +33,24 @@ class FileController extends Controller
                     'message' => "Instore campaign could not be found."
                 ], 400);
             }
-    
+
+            
             $request->file->move(public_path('files'), $filename);
-    
+            
             $shift->images()->create([
                 'url' => $filename,
                 'ambassador_id' => $user->id,
                 'description' => $request->description,
             ]);
-    
+
+            if($request->description == 'selfie') {
+                $shift->hasPersonalPhoto = true;
+                $shift->update();
+            }else if($request->description == 'shelf') {
+                $shift->hasShelfPhoto = true;
+                $shift->update();
+            }
+            
             return response()->json([
                 'error' => false,
                 'message' => "Successfully uploaded file."
