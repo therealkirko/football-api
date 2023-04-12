@@ -12,13 +12,13 @@ use Illuminate\Support\Facades\Auth;
 
 class ShiftController extends Controller
 {
-    public function checkStatus($uuid)
+    public function checkStatus($instoreId)
     {
         try {
             $user = Ambassador::where('id', Auth::user()->id)->first();
             $shift = Shift::where('ambassador_id', $user->id)
-                ->where('uuid', $uuid)
-                ->whereDate('created_at', Carbon::today())
+                ->where('instore_id', $instoreId)
+                ->where('created_at', '>=', Carbon::today())
                 ->first();
 
             if (!$shift){
