@@ -34,7 +34,7 @@ class FileController extends Controller
                 ], 400);
             }
     
-            $request->image->move(public_path('files'), $filename);
+            $request->file->move(public_path('files'), $filename);
     
             $shift->images()->create([
                 'url' => $filename,

@@ -1,11 +1,11 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\CampaignController;
-use App\Http\Controllers\FileController;
-use App\Http\Controllers\ShiftController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FileController;
+use App\Http\Controllers\ShiftController;
+use App\Http\Controllers\CampaignController;
 
 /*
 |--------------------------------------------------------------------------
