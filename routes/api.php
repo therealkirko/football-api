@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CampaignController;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\ShiftController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -45,6 +46,7 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::get('/check/stock/{instoreId}', [ShiftController::class, 'checkStockUpdate']);
 
         Route::post('/clockin', [ShiftController::class, 'index']);
+        Route::post('/selfie', [FileController::class, 'storeInstoreFile']);
         Route::post('/stock-take', [ShiftController::class, 'stockTake']);
     });
 });

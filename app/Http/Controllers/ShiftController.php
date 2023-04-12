@@ -15,7 +15,6 @@ class ShiftController extends Controller
     public function checkStatus($instoreId)
     {
         try {
-            $user = Ambassador::where('id', Auth::user()->id)->first();
 
             $today = Carbon::today();
 
