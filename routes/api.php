@@ -38,6 +38,8 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::get('/instore/{id}', [CampaignController::class, 'showInstore']);
     });
 
+    Route::get('/products/{instoreId}', [CampaignController::class, 'getProducts']);
+
     Route::prefix('shift')->group(function() {
         Route::get('/check/status/{instoreId}', [ShiftController::class, 'checkStatus']);
         Route::get('/check/clockin/{instoreId}', [ShiftController::class, 'checkClockIn']);
@@ -47,6 +49,6 @@ Route::middleware('auth:sanctum')->group(function() {
 
         Route::post('/clockin', [ShiftController::class, 'index']);
         Route::post('/selfie', [FileController::class, 'storeInstoreFile']);
-        Route::post('/stock-take', [ShiftController::class, 'stockTake']);
+        Route::post('/stock', [ShiftController::class, 'stockTake']);
     });
 });

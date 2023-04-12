@@ -93,11 +93,12 @@ class ShiftController extends Controller
                 ->first();
 
             $user->stocks()->create([
-                'product_id' => $request->product,
-                'quantity' => $request->quantity,
-                'remarks' => $request->remarks,
+                'type' => $request->type,
                 'shift_id' => $shift->id,
-                'instore_id' => $request->instore
+                'remarks' => $request->remarks,
+                'quantity' => $request->quantity,
+                'product_id' => $request->product,
+                'instore_id' => $request->instore,
             ]);
 
             $shift->hasUpdatedStock = true;

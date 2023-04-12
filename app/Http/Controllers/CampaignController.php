@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Instore;
+use App\Models\Product;
 use App\Models\Ambassador;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CampaignController extends Controller
@@ -38,6 +38,21 @@ class CampaignController extends Controller
             return response()->json([
                 'error' => true,
                 'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function getProducts($instoreId)
+    {
+        try {
+            $products = Product::where('instore_id', $instoreId)->get();
+            return response()->json([
+                'products' => $products
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => true,
+                'message' => '"Oops!! Failed while trying to fetch campaign products. Try again"'
             ], 500);
         }
     }
