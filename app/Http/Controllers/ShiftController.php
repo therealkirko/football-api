@@ -24,7 +24,7 @@ class ShiftController extends Controller
             if (!$shift){
                 return response()->json([
                     'id' => 1,
-                    'name' => 'clock in'
+                    'name' => 'clockin'
                 ], 200);
             }else if(!$shift->hasPersonalPhoto) {
                 return response()->json([
@@ -34,17 +34,17 @@ class ShiftController extends Controller
             }else if(!$shift->hasShelfPhoto) {
                 return response()->json([
                     'id' => 3,
-                    'name' => 'shelf photo'
+                    'name' => 'shelf'
                 ], 200);
             }else if(!$shift->hasUpdatedStock) {
                 return response()->json([
                     'id' => 4,
-                    'name' => 'update stock'
+                    'name' => 'stock'
                 ], 200);
             }else {
                 return response()->json([
-                    'error' => false,
-                    'message' => 'Completed onboarding process. Good luck on your shift.'
+                    'id' => 5,
+                    'name' => 'completed'
                 ], 200);
             }
         } catch (\Exception $e) {
