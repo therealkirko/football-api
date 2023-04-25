@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\CampaignController;
+use App\Http\Controllers\StockController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,5 +51,9 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::post('/clockin', [ShiftController::class, 'index']);
         Route::post('/selfie', [FileController::class, 'storeInstoreFile']);
         Route::post('/stock', [ShiftController::class, 'stockTake']);
+    });
+
+    Route::prefix('stock')->group(function() {
+        Route::post('/update', [StockController::class, 'update']);
     });
 });
