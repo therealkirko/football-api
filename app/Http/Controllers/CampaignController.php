@@ -52,7 +52,7 @@ class CampaignController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'error' => true,
-                'message' => '"Oops!! Failed while trying to fetch campaign products. Try again"'
+                'message' => "Oops!! Failed while trying to fetch campaign products. Try again"
             ], 500);
         }
     }

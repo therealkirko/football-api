@@ -10,4 +10,9 @@ class Stock extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function images()
+    {
+        return $this->morphOne(Image::class, 'imageable');
+    }
 }
