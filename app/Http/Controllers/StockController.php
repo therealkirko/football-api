@@ -16,12 +16,11 @@ class StockController extends Controller
     public function update(Request $request)
     {
         try {
-            Log::info($request->all());
             $request->validate([
                 'type' => 'required',
                 'product' => 'required',
                 'instore' => 'required',
-                'quantity' => 'required',
+                'quantity' => 'nullable',
                 'remarks' => 'required',
                 'file' => 'mimes:jpg,png,jpeg|max:5048'
             ]);
@@ -63,9 +62,10 @@ class StockController extends Controller
                 'message' => 'Stock updated successfully'
             ], 200);
         } catch (\Exception $e) {
+            Log::error("Message: {$e->getMessage()} Line {$e->getLine()}");
             return response()->json([
                 'error' => true,
-                'message' => "Message: {$e->getMessage()} Line {$e->getLine()}" 
+                'message' => "Oops!! Something went wrong. Please try again later." 
             ], 500);
         }
     }

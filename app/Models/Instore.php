@@ -26,4 +26,9 @@ class Instore extends Model
     {
         return $this->morphOne(Image::class, 'imageable');
     }
+
+    public function engagements(): HasMany
+    {
+        return $this->hasMany(Engagement::class);
+    }
 }

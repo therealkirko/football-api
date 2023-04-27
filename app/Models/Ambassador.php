@@ -51,4 +51,9 @@ class Ambassador extends Authenticatable
     {
         return $this->hasMany(Stock::class);
     }
+
+    public function engagements(): HasMany
+    {
+        return $this->hasMany(Engagement::class);
+    }
 }

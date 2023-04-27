@@ -16,4 +16,9 @@ class Shift extends Model
     {
         return $this->morphOne(Image::class, 'imageable');
     }
+
+    public function engagements()
+    {
+        return $this->hasMany(Engagement::class);
+    }
 }
