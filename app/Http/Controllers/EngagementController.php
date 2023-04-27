@@ -57,6 +57,11 @@ class EngagementController extends Controller
                 'shift_id' => $shift->id,
                 'instore_id' => $request->instore,
             ]);
+
+            return response()->json([
+                'error' => false,
+                'message' => "Customer engagement submitted successfully."
+            ], 201);
         } catch (\Exception $e) {
             Log::error("Message: {$e->getMessage()} Line {$e->getLine()}");
             return response()->json([
