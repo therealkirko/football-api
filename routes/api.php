@@ -59,7 +59,7 @@ Route::middleware('auth:sanctum')->group(function() {
     });
 
     Route::prefix('engagements')->group(function() {
-        Route::get('/', [EngagementController::class, 'index']);
+        Route::get('/{instore}/fetch', [EngagementController::class, 'index']);
         Route::post('/create', [EngagementController::class, 'store']);
     });
 });
