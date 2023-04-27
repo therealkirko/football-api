@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\CampaignController;
+use App\Http\Controllers\EngagementController;
 use App\Http\Controllers\StockController;
 
 /*
@@ -55,5 +56,10 @@ Route::middleware('auth:sanctum')->group(function() {
 
     Route::prefix('stock')->group(function() {
         Route::post('/update', [StockController::class, 'update']);
+    });
+
+    Route::prefix('engagements')->group(function() {
+        Route::get('/', [EngagementController::class, 'index']);
+        Route::post('/create', [EngagementController::class, 'store']);
     });
 });
