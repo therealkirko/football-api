@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Ambassador extends Authenticatable
+class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -31,29 +31,4 @@ class Ambassador extends Authenticatable
         'password',
         'remember_token',
     ];
-
-    public function images(): MorphOne
-    {
-        return $this->morphOne(Image::class, 'imageable');
-    }
-
-    public function instores(): BelongsToMany
-    {
-        return $this->belongsToMany(Instore::class, 'instore_ambassador', 'instore_id', 'ambassador_id');
-    }
-
-    public function shifts(): HasMany
-    {
-        return $this->hasMany(Shift::class);
-    }
-
-    public function stocks(): HasMany
-    {
-        return $this->hasMany(Stock::class);
-    }
-
-    public function engagements(): HasMany
-    {
-        return $this->hasMany(Engagement::class);
-    }
 }

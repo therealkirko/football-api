@@ -9,10 +9,11 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $hidden = [
-        'created_at',
-        'updated_at',
-    ];
-
     protected $guarded = [];
+
+    // One product can have many rewards
+    public function rewards()
+    {
+        return $this->belongsToMany(Reward::class);
+    }
 }

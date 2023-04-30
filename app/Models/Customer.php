@@ -5,14 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Stock extends Model
+class Customer extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
 
-    public function images()
+    // One customer will have only one reward
+    public function reward()
     {
-        return $this->morphOne(Image::class, 'imageable');
+        return $this->hasOne(Reward::class);
     }
 }
