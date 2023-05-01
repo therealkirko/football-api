@@ -16,13 +16,18 @@ class ProductController extends Controller
         try {
             
             $products = Product::where('status', 1)->get();
+            if(empty($products)) {
+                return response()->json([
+                    'error' => 'No products found.'
+                ], 404);
+            }
             $tryAgainProducts = $products->where('slug', 'try-again');
 
             $selectedProducts = collect();
             $attempts = 0;
 
             // Select "try again" products until we have at least 2.
-            while ($selectedProducts->where('slug', 'try-again')->count() < 4 && $attempts < 100) {
+            while ($selectedProducts->where('slug', 'try-again')->count() < 3 && $attempts < 100) {
                 if (rand(1, 100) <= 40) {
                     $selectedProducts->push($tryAgainProducts->random());
                 }
