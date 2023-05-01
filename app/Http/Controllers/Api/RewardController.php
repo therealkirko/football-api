@@ -21,7 +21,6 @@ class RewardController extends Controller
             ]);
     
             $customer = Customer::where('uuid', $request->customer)->first();
-            return $customer;
 
             $product = Product::where('uuid', $request->product)->first();
             
@@ -39,14 +38,14 @@ class RewardController extends Controller
 
             Reward::create([
                 'uuid' => Str::uuid(),
-                'customer_id' => $request->customer,
-                'product_id' => $request->product,
+                'customer_id' => $customer->id,
+                'product_id' => $product->id,
                 'points' => 100,
             ]);
 
             return response()->json([
                 'message' => 'You have successfully claimed your reward.'
-            ]);
+            ], 200);
 
         } catch (\Exception $exception) {
             Log::error("Messgae: {$exception->getMessage()}, File: {$exception->getFile()}, Line: {$exception->getLine()}");
