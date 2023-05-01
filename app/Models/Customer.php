@@ -14,6 +14,6 @@ class Customer extends Model
     // One customer will have only one reward
     public function reward()
     {
-        return $this->hasOne(Reward::class);
+        return $this->hasMany(Reward::class);
     }
 }

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 use App\Models\Product;
 
 class ProductSeeder extends Seeder
@@ -20,41 +21,49 @@ class ProductSeeder extends Seeder
                 'name' => 'Try Again',
                 'slug' => 'try-again',
                 'chance' => 40,
+                'uuid' => Str::uuid()
             ],
             [
                 'name' => 'Product Two',
                 'slug' => 'product-two',
                 'chance' => 10,
+                'uuid' => Str::uuid()
             ],
             [
                 'name' => 'Product Three',
                 'slug' => 'product-three',
                 'chance' => 10,
+                'uuid' => Str::uuid()
             ],
             [
                 'name' => 'Product Four',
                 'slug' => 'product-four',
                 'chance' => 10,
+                'uuid' => Str::uuid()
             ],
             [
                 'name' => 'Product Five',
                 'slug' => 'product-five',
                 'chance' => 10,
+                'uuid' => Str::uuid()
             ],
             [
                 'name' => 'Product Six',
                 'slug' => 'product-six',
                 'chance' => 10,
+                'uuid' => Str::uuid()
             ],
             [
                 'name' => 'Product Seven',
                 'slug' => 'product-seven',
                 'chance' => 10,
+                'uuid' => Str::uuid()
             ],
             [
                 'name' => 'Product Eight',
                 'slug' => 'product-eight',
                 'chance' => 10,
+                'uuid' => Str::uuid()
             ],
         ];
 

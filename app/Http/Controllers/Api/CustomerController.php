@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log; 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use App\Models\Customer;
 
 class CustomerController extends Controller
@@ -11,18 +13,21 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         try {
-            $request->validate([
+            $data = $request->validate([
                 'name' => 'required|string',
                 'phone' => 'required|unique:customers,phone',
             ]);
+
+            $data['uuid'] = Str::uuid();
+            $data['status'] = true;
     
-            $customer = Customer::create($request->validated());
+            $customer = Customer::create($data);
     
             return response()->json([
-                'message' => 'Customer created successfully',
                 'customer' => $customer
             ], 201);
         } catch (\Exception $exception) {
+            Log::error("Messgae: {$exception->getMessage()}, File: {$exception->getFile()}, Line: {$exception->getLine()}");
             return response()->json([
                 'error' => 'We encountered an error while creating the customer. Try again later.'
             ], 500);
