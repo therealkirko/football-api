@@ -16,4 +16,10 @@ class Product extends Model
     {
         return $this->belongsToMany(Reward::class);
     }
+
+    protected $hidden = [
+        'id',
+        'created_at',
+        'updated_at',
+    ];
 }
