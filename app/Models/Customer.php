@@ -16,4 +16,10 @@ class Customer extends Model
     {
         return $this->hasMany(Reward::class);
     }
+
+    protected $hidden = [
+        'id',
+        'created_at',
+        'updated_at',
+    ];
 }
