@@ -23,9 +23,7 @@ class CustomerController extends Controller
     
             $customer = Customer::create($data);
     
-            return response()->json([
-                'customer' => $customer
-            ], 201);
+            return response()->json($customer, 201);
         } catch (\Exception $exception) {
             Log::error("Messgae: {$exception->getMessage()}, File: {$exception->getFile()}, Line: {$exception->getLine()}");
             return response()->json([
