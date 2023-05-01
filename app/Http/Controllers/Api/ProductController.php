@@ -49,7 +49,7 @@ class ProductController extends Controller
 
             return response()->json([
                 'products' => $selectedProducts
-            ]);
+            ], 200);
 
         } catch (\Exception $exception) {
             Log::error("Messgae: {$exception->getMessage()}, File: {$exception->getFile()}, Line: {$exception->getLine()}");
