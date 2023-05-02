@@ -16,6 +16,7 @@ class ProductController extends Controller
         try {
             
             $products = Product::where('status', 1)->get();
+
             if(empty($products)) {
                 return response()->json([
                     'error' => 'No products found.'
@@ -23,11 +24,17 @@ class ProductController extends Controller
             }
             $tryAgainProducts = $products->where('slug', 'try-again');
 
+            if(empty($tryAgainProducts)) {
+                return response()->json([
+                    'error' => 'No products found.'
+                ], 404);
+            }
+
             $selectedProducts = collect();
             $attempts = 0;
 
-            // Select "try again" products until we have at least 2.
-            while ($selectedProducts->where('slug', 'try-again')->count() < 3 && $attempts < 100) {
+            // Select "try again" products until we have at least 1.
+            while ($selectedProducts->where('slug', 'try-again')->count() < 1 && $attempts < 100) {
                 if (rand(1, 100) <= 40) {
                     $selectedProducts->push($tryAgainProducts->random());
                 }
@@ -35,7 +42,7 @@ class ProductController extends Controller
             }
 
             // Select non-"try again" products until we have a total of 6.
-            while ($selectedProducts->count() < 6 && $attempts < 200) {
+            while ($selectedProducts->count() < 3 && $attempts < 200) {
                 $randomProduct = $products->random();
                 if ($randomProduct->slug !== 'try-again' && rand(1, 100) <= $randomProduct->chance) {
                     $selectedProducts->push($randomProduct);
