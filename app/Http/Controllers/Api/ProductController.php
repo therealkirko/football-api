@@ -16,7 +16,6 @@ class ProductController extends Controller
         try {
             
             $products = Product::where('status', 1)->get();
-
             if(empty($products)) {
                 return response()->json([
                     'error' => 'No products found.'
@@ -24,16 +23,10 @@ class ProductController extends Controller
             }
             $tryAgainProducts = $products->where('slug', 'try-again');
 
-            if(empty($tryAgainProducts)) {
-                return response()->json([
-                    'error' => 'No products found.'
-                ], 404);
-            }
-
             $selectedProducts = collect();
             $attempts = 0;
 
-            // Select "try again" products until we have at least 1.
+            // Select "try again" products until we have at least 2.
             while ($selectedProducts->where('slug', 'try-again')->count() < 1 && $attempts < 100) {
                 if (rand(1, 100) <= 40) {
                     $selectedProducts->push($tryAgainProducts->random());
@@ -45,9 +38,14 @@ class ProductController extends Controller
             while ($selectedProducts->count() < 3 && $attempts < 200) {
                 $randomProduct = $products->random();
                 if ($randomProduct->slug !== 'try-again' && rand(1, 100) <= $randomProduct->chance) {
-                    $selectedProducts->push($randomProduct);
-                } elseif ($selectedProducts->where('slug', 'try-again')->count() < 2 && rand(1, 100) <= 40) {
+                    if(!$selectedProducts->contains('id', $randomProduct->id)) {
+                        $selectedProducts->push($randomProduct);
+                    }
+                } elseif ($selectedProducts->where('slug', 'try-again')->count() < 1 && rand(1, 100) <= 40) {
                     $selectedProducts->push($tryAgainProducts->random());
+                    if(!$selectedProducts->contains('id', $randomProduct->id)) {
+                        $selectedProducts->push($randomProduct);
+                    }
                 }
                 $attempts++;
             }
