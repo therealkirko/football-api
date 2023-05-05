@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AnalyticsController;
 use App\Http\Controllers\Api\CustomerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +29,15 @@ Route::post('/customer', [CustomerController::class, 'store']);
 Route::prefix('products')->group(function() {
     Route::get('/', [ProductController::class, 'index']);
     Route::post('/store', [ProductController::class, 'store']);
+});
+
+Route::prefix('analytica')->group(function() {
+    Route::get('/', [AnalyticsController::class, 'index']);
+    Route::prefix('rewards')->group(function() {
+        Route::get('/', [AnalyticsController::class, 'rewards']);
+        Route::get('/recent', [AnalyticsController::class, 'recentRewards']);
+    });
+    Route::get('/customers', [AnalyticsController::class, 'customers']);
 });
 
 

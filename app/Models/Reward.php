@@ -18,8 +18,8 @@ class Reward extends Model
     }
 
     // One reward can have many products
-    public function products()
+    public function product()
     {
-        return $this->belongsToMany(Product::class);
+        return $this->belongsTo(Product::class);
     }
 }

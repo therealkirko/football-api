@@ -13,8 +13,7 @@ class ProductController extends Controller
 {
     public function index(): JsonResponse
     {
-        try {
-            
+        try {            
             $products = Product::where('status', 1)->get();
             if(empty($products)) {
                 return response()->json([
@@ -22,34 +21,22 @@ class ProductController extends Controller
                 ], 404);
             }
             $tryAgainProducts = $products->where('slug', 'try-again');
+            $otherProducts = $products->where('slug', '!=', 'try-again');
 
-            $selectedProducts = collect();
+            // Select one "try again" product
+            $selectedProducts = collect([$tryAgainProducts->random()]);
             $attempts = 0;
-
-            // Select "try again" products until we have at least 2.
-            while ($selectedProducts->where('slug', 'try-again')->count() < 1 && $attempts < 100) {
-                if (rand(1, 100) <= 40) {
-                    $selectedProducts->push($tryAgainProducts->random());
-                }
-                $attempts++;
-            }
-
-            // Select non-"try again" products until we have a total of 6.
+    
+            // Select two other products
             while ($selectedProducts->count() < 3 && $attempts < 200) {
-                $randomProduct = $products->random();
-                if ($randomProduct->slug !== 'try-again' && rand(1, 100) <= $randomProduct->chance) {
-                    if(!$selectedProducts->contains('id', $randomProduct->id)) {
-                        $selectedProducts->push($randomProduct);
-                    }
-                } elseif ($selectedProducts->where('slug', 'try-again')->count() < 1 && rand(1, 100) <= 40) {
-                    $selectedProducts->push($tryAgainProducts->random());
-                    if(!$selectedProducts->contains('id', $randomProduct->id)) {
-                        $selectedProducts->push($randomProduct);
-                    }
+                $randomProduct = $otherProducts->random();
+                if (!$selectedProducts->contains('id', $randomProduct->id) && rand(1, 100) <= $randomProduct->chance) {
+                    $selectedProducts->push($randomProduct);
                 }
                 $attempts++;
             }
 
+            // Randomize the order of the products
             $selectedProducts = $selectedProducts->shuffle();
 
             return response()->json([
