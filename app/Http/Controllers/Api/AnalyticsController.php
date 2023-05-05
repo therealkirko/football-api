@@ -44,9 +44,9 @@ class AnalyticsController extends Controller
             $rewards = $rewards->map(function ($reward) {
                 return [
                     'uuid' => $reward->uuid,
-                    'customer_name' => $reward->customer->name,
-                    'product_name' => $reward->product->name,
-                    'reward_date' => $reward->created_at->format('d-m-Y')
+                    'customer' => $reward->customer->name,
+                    'product' => $reward->product->name,
+                    'date' => $reward->created_at->format('d-m-Y')
                 ];
             });
 
@@ -62,11 +62,16 @@ class AnalyticsController extends Controller
         }
     }
 
-    public function rewards() {
+    public function rewards($limit = null) {
         try {
             $rewards = Reward::where('status', true)
                 ->orderBy('created_at', 'desc')
                 ->get();
+
+            // If limit is set, return the number of rewards specified
+            if ($limit !== null) {
+                $rewards = $rewards->take($limit);
+            }
 
             // Format rewards to return reward uuid, customer name, product name and reward date
             $rewards = $rewards->map(function ($reward) {
@@ -98,9 +103,6 @@ class AnalyticsController extends Controller
             $customers = Customer::where('status', true)
                 ->orderBy('created_at', 'desc')
                 ->get();
-
-            // Group customers by phone number
-            $customers = $customers->groupBy('phone');
 
             return response()->json([
                 'customers' => $customers

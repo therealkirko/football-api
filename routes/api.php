@@ -34,8 +34,7 @@ Route::prefix('products')->group(function() {
 Route::prefix('analytica')->group(function() {
     Route::get('/', [AnalyticsController::class, 'index']);
     Route::prefix('rewards')->group(function() {
-        Route::get('/', [AnalyticsController::class, 'rewards']);
-        Route::get('/recent', [AnalyticsController::class, 'recentRewards']);
+        Route::get('/{limit?}', [AnalyticsController::class, 'rewards']);
     });
     Route::get('/customers', [AnalyticsController::class, 'customers']);
 });
